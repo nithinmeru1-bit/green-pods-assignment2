@@ -1,0 +1,87 @@
+{
+  "model": "HSV/LAB color histograms + LBP texture + class-weighted RBF SVM",
+  "validation_accuracy_initial_train_only": 0.9798657718120806,
+  "test_accuracy": 0.9696969696969697,
+  "macro_precision": 0.97,
+  "macro_recall": 0.9659090909090909,
+  "macro_f1": 0.9657498702646601,
+  "class_names": [
+    "blackspot",
+    "canker",
+    "fresh",
+    "grenning"
+  ],
+  "test_samples": 99,
+  "classification_report": {
+    "blackspot": {
+      "precision": 0.88,
+      "recall": 1.0,
+      "f1-score": 0.9361702127659575,
+      "support": 22.0
+    },
+    "canker": {
+      "precision": 1.0,
+      "recall": 0.8636363636363636,
+      "f1-score": 0.926829268292683,
+      "support": 22.0
+    },
+    "fresh": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 33.0
+    },
+    "grenning": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 22.0
+    },
+    "accuracy": 0.9696969696969697,
+    "macro avg": {
+      "precision": 0.97,
+      "recall": 0.9659090909090909,
+      "f1-score": 0.9657498702646601,
+      "support": 99.0
+    },
+    "weighted avg": {
+      "precision": 0.9733333333333333,
+      "recall": 0.9696969696969697,
+      "f1-score": 0.9695554402352535,
+      "support": 99.0
+    }
+  },
+  "confusion_matrix": [
+    [
+      22,
+      0,
+      0,
+      0
+    ],
+    [
+      3,
+      19,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      33,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      22
+    ]
+  ],
+  "confusion_matrix_order": [
+    "blackspot",
+    "canker",
+    "fresh",
+    "grenning"
+  ],
+  "elapsed_seconds": 16.21
+}
