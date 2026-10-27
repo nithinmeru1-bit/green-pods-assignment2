@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta
+      name="description"
+      content="A computer vision project comparing classical machine learning and MobileNetV2 for orange condition classification."
+    >
+    <title>Orange Condition Classification</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #19332d;
+        --muted: #60736c;
+        --paper: #f7f8f2;
+        --panel: #fff;
+        --green: #245c45;
+        --lime: #d7ed9b;
+        --line: #e2e8dd;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: "Segoe UI", Arial, sans-serif;
+        line-height: 1.6;
+      }
+
+      a {
+        color: var(--green);
+      }
+
+      a:focus-visible {
+        outline: 3px solid #d99032;
+        outline-offset: 3px;
+      }
+
+      .hero {
+        padding: 72px 24px 64px;
+        background:
+          radial-gradient(ellipse at 85% 20%, #527552 0, transparent 35%),
+          linear-gradient(125deg, #17392f, #245c45 65%, #477347);
+        color: #fff;
+      }
+
+      .hero-inner,
+      main,
+      footer {
+        width: min(1080px, 100%);
+        margin: 0 auto;
+      }
+
+      .eyebrow {
+        margin: 0 0 12px;
+        color: var(--lime);
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        max-width: 760px;
+        margin: 0;
+        font-size: clamp(2.4rem, 7vw, 4.5rem);
+        letter-spacing: -0.05em;
+        line-height: 1.05;
+      }
+
+      .hero-copy {
+        max-width: 680px;
+        margin: 22px 0 28px;
+        color: #e4eee6;
+        font-size: 1.15rem;
+      }
+
+      .labels {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 9px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .labels li {
+        padding: 5px 12px;
+        border: 1px solid #ffffff55;
+        border-radius: 999px;
+        color: #fff;
+        font-size: 0.9rem;
+      }
+
+      main {
+        padding: 36px 24px 64px;
+      }
+
+      section {
+        margin: 32px 0;
+      }
+
+      h2 {
+        margin: 0 0 14px;
+        font-size: 1.65rem;
+        letter-spacing: -0.03em;
+      }
+
+      h3 {
+        margin: 0 0 8px;
+        font-size: 1.1rem;
+      }
+
+      p {
+        margin: 0 0 14px;
+      }
+
+      .notice {
+        padding: 16px 18px;
+        border-left: 4px solid #d99032;
+        border-radius: 0 10px 10px 0;
+        background: #fff6e6;
+        color: #49391e;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        gap: 16px;
+      }
+
+      .card {
+        padding: 20px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: var(--panel);
+      }
+
+      .card p:last-child {
+        margin-bottom: 0;
+      }
+
+      .step {
+        display: inline-grid;
+        width: 30px;
+        height: 30px;
+        margin-bottom: 12px;
+        place-items: center;
+        border-radius: 50%;
+        background: var(--lime);
+        color: var(--ink);
+        font-size: 0.9rem;
+        font-weight: 700;
+      }
+
+      .table-wrap {
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: var(--panel);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+      }
+
+      th,
+      td {
+        padding: 11px 14px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      th {
+        background: #edf2e8;
+      }
+
+      tbody tr:last-child td {
+        border-bottom: 0;
+      }
+
+      .metrics {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 12px;
+        margin: 18px 0;
+      }
+
+      .metric {
+        padding: 16px;
+        border-radius: 12px;
+        background: #eaf1e4;
+      }
+
+      .metric strong {
+        display: block;
+        font-size: 1.55rem;
+        letter-spacing: -0.03em;
+      }
+
+      .metric span {
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      figure {
+        margin: 18px 0;
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: var(--panel);
+      }
+
+      figure img {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      figcaption {
+        padding: 8px 4px 2px;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .link-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 10px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .link-list a {
+        display: block;
+        height: 100%;
+        padding: 13px 15px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: var(--panel);
+        font-weight: 650;
+        text-decoration: none;
+      }
+
+      .link-list a:hover {
+        border-color: var(--green);
+        background: #f0f5eb;
+      }
+
+      footer {
+        padding: 24px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      @media (max-width: 560px) {
+        .hero {
+          padding: 52px 20px 46px;
+        }
+
+        main {
+          padding: 24px 18px 44px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="hero">
+      <div class="hero-inner">
+        <p class="eyebrow">Computer vision · Model comparison</p>
+        <h1>Orange Condition Classification</h1>
+        <p class="hero-copy">
+          Comparing hand-designed color and texture features with transfer
+          learning to classify orange images.
+        </p>
+        <ul class="labels" aria-label="Dataset classes">
+          <li>blackspot</li>
+          <li>canker</li>
+          <li>fresh</li>
+          <li>grenning</li>
+        </ul>
+      </div>
+    </header>
+
+    <main>
+      <section aria-labelledby="about-title">
+        <h2 id="about-title">About the project</h2>
+        <p>
+          This project compares a classical Support Vector Machine (SVM) with
+          a MobileNetV2 deep-learning model. Both are evaluated against the
+          same held-out test images.
+        </p>
+        <p class="notice">
+          <strong>Scope note:</strong> despite the original folder name, this
+          project classifies orange conditions. It does not classify avocado
+          ripeness. This page presents saved project materials; it does not
+          host a live image-prediction service.
+        </p>
+      </section>
+
+      <section aria-labelledby="data-title">
+        <h2 id="data-title">Dataset</h2>
+        <p>
+          The dataset contains 1,090 images. The supplied test split remains
+          separate while a validation set is drawn from the training data.
+        </p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Class</th>
+                <th scope="col">Train</th>
+                <th scope="col">Test</th>
+                <th scope="col">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">blackspot</th><td>184</td><td>22</td><td>206</td></tr>
+              <tr><th scope="row">canker</th><td>179</td><td>22</td><td>201</td></tr>
+              <tr><th scope="row">fresh</th><td>281</td><td>33</td><td>314</td></tr>
+              <tr><th scope="row">grenning</th><td>347</td><td>22</td><td>369</td></tr>
+              <tr><th scope="row">Total</th><td>991</td><td>99</td><td>1,090</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section aria-labelledby="methods-title">
+        <h2 id="methods-title">Two approaches</h2>
+        <div class="grid">
+          <article class="card">
+            <span class="step" aria-hidden="true">1</span>
+            <h3>Classical machine learning</h3>
+            <p>
+              HSV and LAB color histograms plus a Local Binary Pattern texture
+              histogram are scaled and classified with a class-weighted
+              RBF-kernel SVM.
+            </p>
+          </article>
+          <article class="card">
+            <span class="step" aria-hidden="true">2</span>
+            <h3>Deep learning</h3>
+            <p>
+              ImageNet-pretrained MobileNetV2 uses a newly trained four-class
+              output layer. The feature backbone is frozen, with image
+              augmentation during training.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section aria-labelledby="results-title">
+        <h2 id="results-title">Held-out test results</h2>
+        <p>
+          Both models were tested on the same 99 images. Macro-averaged
+          metrics give each class equal weight.
+        </p>
+        <div class="metrics" aria-label="Test accuracy and macro F1">
+          <div class="metric">
+            <strong>96.97%</strong>
+            <span>SVM accuracy</span>
+          </div>
+          <div class="metric">
+            <strong>96.57%</strong>
+            <span>SVM macro F1</span>
+          </div>
+          <div class="metric">
+            <strong>94.95%</strong>
+            <span>MobileNetV2 accuracy</span>
+          </div>
+          <div class="metric">
+            <strong>94.45%</strong>
+            <span>MobileNetV2 macro F1</span>
+          </div>
+        </div>
+        <figure>
+          <img
+            src="reports/figures/confusion_matrices.png"
+            alt="Confusion matrices comparing classical SVM and MobileNetV2 on the orange test set."
+            loading="lazy"
+          >
+          <figcaption>
+            Confusion matrices for the same held-out test set. See the report
+            for class-by-class metrics.
+          </figcaption>
+        </figure>
+        <p class="notice">
+          The test set contains only 22–33 examples per class. In addition,
+          the fresh images have a different format and size profile, which may
+          provide a dataset shortcut. These results are preliminary and do
+          not establish real-world performance.
+        </p>
+      </section>
+
+      <section aria-labelledby="resources-title">
+        <h2 id="resources-title">Explore the project</h2>
+        <ul class="link-list">
+          <li><a href="PRESENTATION_GUIDE.md">30-minute presentation guide</a></li>
+          <li><a href="README.md">Project setup and documentation</a></li>
+          <li><a href="notebooks/01_eda_and_data_cleaning.ipynb">Notebook 1: Data exploration</a></li>
+          <li><a href="notebooks/02_approach_1_classical_ml.ipynb">Notebook 2: Classical ML</a></li>
+          <li><a href="notebooks/03_approach_2_deep_learning.ipynb">Notebook 3: Deep learning</a></li>
+          <li><a href="notebooks/04_model_evaluation_and_demo.ipynb">Notebook 4: Evaluation and demo</a></li>
+          <li><a href="reports/Assignment2_Orange_Report.pdf">Project report (PDF)</a></li>
+          <li><a href="reports/test_metrics.json">Saved test metrics (JSON)</a></li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="next-title">
+        <h2 id="next-title">What would improve the project?</h2>
+        <div class="grid">
+          <article class="card">
+            <h3>Broader data</h3>
+            <p>
+              Collect more balanced examples across cameras, locations,
+              cultivars, and lighting conditions.
+            </p>
+          </article>
+          <article class="card">
+            <h3>Stronger validation</h3>
+            <p>
+              Verify labels and evaluate on an independent external dataset
+              before considering real-world use.
+            </p>
+          </article>
+          <article class="card">
+            <h3>Deployment testing</h3>
+            <p>
+              Measure end-to-end performance on target hardware and include
+              image decoding and resizing in latency tests.
+            </p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      Educational project · Orange image classification · Results depend on
+      the supplied dataset and test split.
+    </footer>
+  </body>
+</html>

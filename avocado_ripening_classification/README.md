@@ -90,6 +90,24 @@ py main_demo.py "data/raw/test/fresh/f (1).png"
 Optional model paths can be supplied with `--classical-model` and `--deep-model`.
 The script reports predictions from both trained models.
 
+## Deploy the project page to Vercel
+
+The root `index.html` is a static project showcase. It presents the project
+and links to the notebooks, results, and report; it does not run model
+predictions or require a Python function.
+
+In Vercel, import the repository and configure:
+
+- **Root Directory:** `avocado_ripening_classification`
+- **Framework Preset:** `Other`
+- **Build Command:** leave blank
+- **Output Directory:** leave blank (serve the project root)
+
+Then deploy. If Vercel still reports that it cannot find a Python entrypoint,
+check that the Root Directory is the project folder and that the Framework
+Preset is not set to Python. The notebook and command-line demo are not
+web-server entrypoints.
+
 ## Evaluation and dataset limitations
 
 Notebook 4 reports accuracy, macro precision, macro recall, macro F1-score,
